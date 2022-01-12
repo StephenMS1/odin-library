@@ -1,4 +1,12 @@
 
+body {
+    height: 100vh;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(rgb(58, 0, 58), black);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .text {
     color: white;  
 }
@@ -18,6 +26,7 @@
 }
 
 .signIn {
+    flex-grow: 0;
     color: white;
     background-color: tomato;
     width: 120px;
@@ -25,11 +34,10 @@
     border-radius: 10px;
 }
 
-body {
-    height: 100vh;
-    margin: 0;
-    background-repeat: no-repeat;
-    background-image: linear-gradient(rgb(58, 0, 58), black);
+
+
+.mainBody {
+    height: 100%;
 }
 
 .gridAndInfo {
@@ -37,10 +45,16 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: stretch;
+    height: 100%;
 }
 
 .grid {
-    width: 800px;
+    flex-grow: 1;
+    display: flex;
+    flex-flow: row wrap;
+    height: 100%;
+    justify-content: space-evenly;
+
 }
 
 .info {
@@ -50,7 +64,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    height: 100%
+}
+
+.infoTitle {
+    flex-grow: 0;
 }
 
 .line {
@@ -60,4 +78,114 @@ body {
     gap: 40px;
     justify-content: space-between;
     font-size: 24px;
+}
+
+.bookCard {
+    height: 500px;
+    width: 300px;
+    background: white;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgba(255, 255, 255, 1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.createBook {
+    height: 500px;
+    width: 300px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px;
+    transition: 0.2s;
+    
+}
+
+.createBook:hover {
+    box-shadow: 0 0 15px 8px white;
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.editRemoveBanner {
+    height: 12%;
+    background: grey;
+    display: flex;
+}
+
+button {
+    color: white;
+    font-size: 20px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.editBtn {
+    background-color: green;
+    width: 50%;
+}
+
+.removeBtn {
+    background-color: maroon;
+    width: 50%;
+}
+
+.bookInfo {
+    background-color: darkblue;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    flex-grow: 1;
+}
+
+h2{
+    align-self: center;
+    flex-grow: 1;
+}
+
+em {
+    align-self: flex-end;
+}    
+
+
+.pageControls {
+    display: flex;
+    height: 12%;
+    margin: 0px;
+    padding: 0;
+}
+
+.increaseBtn, .decreaseBtn, .allPagesBtn {
+    width: 80%;
+}
+
+.increaseBtn {
+    background-color: rgb(59, 230, 25);
+    
+}
+
+.decreaseBtn {
+    background-color: red;
+    
+}
+
+.allPagesBtn {
+    background-color: blue;
+}
+
+.pageDisplay {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(99, 99, 99);
+    display: flex;
+    justify-content: space-evenly;
+    color: white;
+    height: 10%;
 }
