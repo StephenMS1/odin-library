@@ -146,14 +146,9 @@ function showLibrary(myLibrary) {
 
 showLibrary(myLibrary);
 
-createBook.addEventListener('click', () => {
-    let title;
-    let author;
-    let pages;
-    let pagesRead;
-})
 
-//creating the newbookCard 'Button'
+
+//function for creating the newbookCard 'Button'
 function createNewBookCard () {
     const createBook = document.createElement('div');
     createBook.classList.add('createBook');
@@ -161,4 +156,14 @@ function createNewBookCard () {
     plusSymbol.textContent = '+';
     createBook.appendChild(plusSymbol);
     grid.appendChild(createBook);
+
+    createBook.addEventListener('click', showInputForm)
 }
+
+
+function showInputForm() {
+    const inputForm = document.querySelector('.inputFormScreen').style.display = 'block';
+
+
+}
+createNewBookCard();
