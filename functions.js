@@ -39,11 +39,17 @@ addBookToLibrary(W3);
 console.table(myLibrary);
 
 function showLibrary(myLibrary) {
+    while (grid.firstChild){
+        grid.removeChild(grid.lastChild);
+    }
+    let index = 0;
     myLibrary.forEach(entry => {
 
         //creating bookCard
         const bookCard = document.createElement('div');
         bookCard.classList.add('bookCard');
+        bookCard.setAttribute('id', index);
+        index ++;
 
         //creating top banner of bookCard, incl edit/remove buttons
         const bookEditRemove = document.createElement('div');
@@ -67,7 +73,7 @@ function showLibrary(myLibrary) {
         cardTitle.textContent = entry.title;
 
         const cardAuthor = document.createElement('em');
-        cardAuthor.textContent=entry.author
+        cardAuthor.textContent = entry.author;
         
         //creating the interactive part of the card (page controls)
         const pageControls = document.createElement('div');
@@ -120,9 +126,35 @@ function showLibrary(myLibrary) {
 
         grid.appendChild(bookCard);
 
+        createNewBookCard;
         
     });
-    //creating the newbook selector
+    
+    //Code for removal of books
+    removeButtons = Array.from(document.querySelectorAll('.removeBtn'));
+    removeButtons.forEach((button) => {
+        button.addEventListener('click', function(e) {
+            removeIndex = e.path[2].id;
+            console.log(removeIndex);
+            myLibrary.splice(removeIndex, 1);
+            showLibrary(myLibrary);
+    })
+})
+}
+
+
+
+showLibrary(myLibrary);
+
+createBook.addEventListener('click', () => {
+    let title;
+    let author;
+    let pages;
+    let pagesRead;
+})
+
+//creating the newbookCard 'Button'
+function createNewBookCard () {
     const createBook = document.createElement('div');
     createBook.classList.add('createBook');
     const plusSymbol = document.createElement('h1');
@@ -130,16 +162,3 @@ function showLibrary(myLibrary) {
     createBook.appendChild(plusSymbol);
     grid.appendChild(createBook);
 }
-
-
-
-showLibrary(myLibrary);
-
-//trying to get indentifier ready for deletion of a given bookCard
-removeButtons = Array.from(document.querySelectorAll('.removeBtn'));
-removeButtons.forEach((button) => {
-    button.addEventListener('click', function(e) {
-        console.log(e.path[2].querySelector('.cardTitle'));
-        console.log(e.path);
-    })
-})
