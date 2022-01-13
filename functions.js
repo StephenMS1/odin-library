@@ -162,8 +162,14 @@ function createNewBookCard () {
 
 
 function showInputForm() {
-    const inputForm = document.querySelector('.inputFormScreen').style.display = 'block';
+    const inputForm = document.querySelector('.inputFormScreen').style.display = 'flex';
 
 
 }
 createNewBookCard();
+
+const addNewBookToLibrary = document.querySelector('.addBook');
+console.log(addNewBookToLibrary);
+addNewBookToLibrary.addEventListener('click', function(e) {
+    console.log(e);
+})
