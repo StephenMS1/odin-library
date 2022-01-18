@@ -1,9 +1,6 @@
 // creation of variables for relevant DOM elements
 const grid = document.querySelector('.grid');
 
-console.log(grid);
-
-
 // Array for library and functions to create and add book
 
 let myLibrary =[];
@@ -17,6 +14,7 @@ function Book(title, author, pages, pagesRead) {
 
 function addBookToLibrary(book) {
     myLibrary.push(book);
+    
 }
 
 const HP = new Book('Harry Potter & the POA', 'J.k. Rowling', 486, 240);
@@ -26,17 +24,12 @@ const SP = new Book('Skulduggery Pleasant', 'Derek Landy', 275, 123);
 const W3 = new Book('Witcher 3', 'IDK', 283, 191);
 
 
-console.log(HP);
-
 addBookToLibrary(HP);
 
 addBookToLibrary(SP);
 
 addBookToLibrary(W3);
 
-
-
-console.table(myLibrary);
 
 function showLibrary(myLibrary) {
     while (grid.firstChild){
@@ -69,10 +62,11 @@ function showLibrary(myLibrary) {
         bookInfo.classList.add('bookInfo');
 
         const cardTitle = document.createElement('h2');
-        cardTitle.classList.add('cardTitle')
+        cardTitle.classList.add('cardTitle', 'accessInfo')
         cardTitle.textContent = entry.title;
 
         const cardAuthor = document.createElement('em');
+        cardAuthor.classList.add('accessInfo');
         cardAuthor.textContent = entry.author;
         
         //creating the interactive part of the card (page controls)
@@ -95,12 +89,14 @@ function showLibrary(myLibrary) {
         pageDisplay.classList.add('pageDisplay');
 
         const currentPages = document.createElement('p');
+        currentPages.classList.add('accessInfo');
         currentPages.textContent = entry.pagesRead;
 
         const divider = document.createElement('p');
         divider.textContent = '|';
 
         const totalPages = document.createElement('p');
+        totalPages.classList.add('accessInfo');
         totalPages.textContent = entry.pages;
 
 
@@ -126,27 +122,36 @@ function showLibrary(myLibrary) {
 
         grid.appendChild(bookCard);
 
-        createNewBookCard;
+        
         
     });
     
-    //Code for removal of books
+    //functions for repeated e.g. newbookCard or removebuttonEvents
+    createNewBookCard();
+    removeBookListeners();
+    
+    
+    
+}
+
+
+//function to start once pages loads
+window.addEventListener('load', showLibrary(myLibrary));
+
+
+
+
+//Code for removal of books
+function removeBookListeners(){
     removeButtons = Array.from(document.querySelectorAll('.removeBtn'));
     removeButtons.forEach((button) => {
         button.addEventListener('click', function(e) {
             removeIndex = e.path[2].id;
-            console.log(removeIndex);
             myLibrary.splice(removeIndex, 1);
             showLibrary(myLibrary);
+        })
     })
-})
 }
-
-
-
-showLibrary(myLibrary);
-
-
 
 //function for creating the newbookCard 'Button'
 function createNewBookCard () {
@@ -160,16 +165,81 @@ function createNewBookCard () {
     createBook.addEventListener('click', showInputForm)
 }
 
-
+//functions to show or hide inputform
 function showInputForm() {
-    const inputForm = document.querySelector('.inputFormScreen').style.display = 'flex';
-
-
+    const inputForm = document.querySelector('.inputFormScreen');
+    inputForm.style.display = 'flex';
 }
-createNewBookCard();
+
+function hideInputForm() {
+    const inputForm = document.querySelector('.inputFormScreen');
+    inputForm.style.display = 'none';
+}
+
+function showEditForm() {
+    const editForm = document.querySelector('.editFormScreen');
+    editForm.style.display = 'flex';
+}
+
+function hideEditForm() {
+    const editForm = document.querySelector('.editFormScreen');
+    editForm.style.display = 'none';
+}
+
+const closeInputForm = document.querySelector('.closeForm');
+closeInputForm.addEventListener('click', function(e) {
+    console.log(e.path);
+    hideInputForm();
+    let inputElements = e.path[2].querySelectorAll('input');
+    for (let [instance, entry] of Object.entries(inputElements)) {
+        entry.value = '';
+    }
+})
+
+
+
+//function for adding the filled out form as a new book
 
 const addNewBookToLibrary = document.querySelector('.addBook');
-console.log(addNewBookToLibrary);
 addNewBookToLibrary.addEventListener('click', function(e) {
-    console.log(e);
+    let inputFormArray = [];
+    
+    hideInputForm();
+    
+    let inputElements = e.path[2].querySelectorAll('input');
+    console.log(inputElements);
+
+    for (let [instance, entry] of Object.entries(inputElements)) {
+        inputFormArray.push(entry.value);
+    }
+    console.log(inputFormArray);
+    
+    for (let [instance, entry] of Object.entries(inputElements)) {
+        entry.value = '';
+    }
+
+    let NB = new Book(inputFormArray[0], inputFormArray[1], inputFormArray[2], inputFormArray[3]);
+    addBookToLibrary(NB);
+    showLibrary(myLibrary);
+})
+
+
+//function for editing book
+editButtons = Array.from(document.querySelectorAll('.editBtn'));
+editButtons.forEach((button) => {
+    button.addEventListener('click', function(e) {
+        showEditForm()
+
+        //get information off the book that is being edited.
+        let infoToFillForm = []
+        let inputPopulators = e.path[2].querySelectorAll('.accessInfo');
+        console.log(inputPopulators);
+
+        for (let [instance, entry] of Object.entries(inputPopulators)) {
+            infoToFillForm.push(entry.textContent);
+        }
+        console.log(infoToFillForm);
+
+        //get the input fields of the edit form and fill with the relevant book info
+    })
 })

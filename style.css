@@ -216,10 +216,30 @@ em {
 .inputBanner {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .inputBanner h1 {
-    padding: 20px;
+    flex-grow: 1;
+    margin-left: 65px;
+    text-align: center;
+
+}
+
+.closeForm {
+    justify-self: flex-end;
+    align-self: flex-start;
+    margin: 10px;
+    width: 50px;
+}
+
+.closeEdit {
+    justify-self: flex-end;
+    align-self: flex-start;
+    margin: 10px;
+    width: 50px;
+    background-color: rgba(218, 218, 218, 0);
+    color: black;
 }
 
 .closeForm, .addBook {
@@ -255,4 +275,20 @@ input {
 
 input:focus {
     outline: none;
+}
+
+
+.editFormScreen {
+    position: fixed;
+    display: none;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.315);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
