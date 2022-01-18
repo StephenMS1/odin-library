@@ -241,5 +241,33 @@ editButtons.forEach((button) => {
         console.log(infoToFillForm);
 
         //get the input fields of the edit form and fill with the relevant book info
+        const editForm = document.querySelector('.editFormScreen').querySelectorAll('input');
+        console.log(editForm);
+        
+        for (let [instance, entry] of Object.entries(editForm)){
+            entry.value = infoToFillForm[instance];
+        }
+
+        //listener on update that repopulates book values with the newly entered ones.
+        const closeEdit = document.querySelector('.editFormScreen').querySelector('.addBook');
+        closeEdit.addEventListener('click', function(e) {
+            let inputFormArray = [];
+
+            let inputElements = e.path[2].querySelectorAll('input');
+
+            for (let [instance, entry] of Object.entries(inputElements)) {
+                inputFormArray.push(entry.value)
+            }
+            console.log(inputFormArray);
+
+            for (let [instance, entry] of Object.entries(inputPopulators)) {
+                entry.textContent = inputFormArray[instance];
+            }
+
+            hideEditForm();
+        })
+
+        
+        
     })
 })
