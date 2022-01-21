@@ -41,7 +41,7 @@ function showLibrary(myLibrary) {
         //creating bookCard
         const bookCard = document.createElement('div');
         bookCard.classList.add('bookCard');
-        bookCard.setAttribute('id', index);
+        bookCard.setAttribute('id', `Index:${index}`);
         index ++;
 
         //creating top banner of bookCard, incl edit/remove buttons
@@ -147,7 +147,7 @@ function removeBookListeners(){
     removeButtons.forEach((button) => {
         button.addEventListener('click', function(e) {
             removeIndex = e.path[2].id;
-            myLibrary.splice(removeIndex, 1);
+            myLibrary.splice(removeIndex.slice(-1), 1);
             showLibrary(myLibrary);
         })
     })
@@ -226,14 +226,21 @@ addNewBookToLibrary.addEventListener('click', function(e) {
 
 //function for editing book
 editButtons = Array.from(document.querySelectorAll('.editBtn'));
+
 editButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
         showEditForm()
+        console.log(myLibrary);
+
+        //creating an index point for which card to change
+        let indexForChange = e.path[2].id;
+        console.log(indexForChange);
+        
 
         //get information off the book that is being edited.
         let infoToFillForm = []
         let inputPopulators = e.path[2].querySelectorAll('.accessInfo');
-        console.log(inputPopulators);
+        
 
         for (let [instance, entry] of Object.entries(inputPopulators)) {
             infoToFillForm.push(entry.textContent);
@@ -248,26 +255,40 @@ editButtons.forEach((button) => {
             entry.value = infoToFillForm[instance];
         }
 
-        //listener on update that repopulates book values with the newly entered ones.
-        const closeEdit = document.querySelector('.editFormScreen').querySelector('.addBook');
-        closeEdit.addEventListener('click', function(e) {
+        function updateTheInfo(e) { 
+            //get the newly entered information when update is clicked.
             let inputFormArray = [];
 
             let inputElements = e.path[2].querySelectorAll('input');
+            
 
             for (let [instance, entry] of Object.entries(inputElements)) {
                 inputFormArray.push(entry.value)
             }
             console.log(inputFormArray);
 
-            for (let [instance, entry] of Object.entries(inputPopulators)) {
+            
+            let cardToEdit = document.getElementById(indexForChange);
+            console.log('here is the card to edit', cardToEdit);
+
+            let desiredInputs = cardToEdit.querySelectorAll('.accessInfo');
+            console.log(desiredInputs);
+
+            //replace card info with the newly entered information
+            for (let [instance, entry] of Object.entries(desiredInputs)) {
                 entry.textContent = inputFormArray[instance];
             }
 
             hideEditForm();
-        })
+            closeEdit.removeEventListener('click', updateTheInfo);
+        }
 
         
+
+        //listener on update that repopulates book values with the newly entered ones.
+        const closeEdit = document.querySelector('.editFormScreen').querySelector('.addBook');
+        closeEdit.addEventListener('click', updateTheInfo);
+
         
     })
 })
