@@ -131,7 +131,7 @@ function showLibrary(myLibrary) {
     removeBookListeners();
     editListeners();
     pageCountListeners();
-    
+    updateInfoPane();
     
 }
 
@@ -189,7 +189,6 @@ function hideEditForm() {
 
 const closeInputForm = document.querySelector('.closeForm');
 closeInputForm.addEventListener('click', function(e) {
-    console.log(e.path);
     hideInputForm();
     let inputElements = e.path[2].querySelectorAll('input');
     for (let [instance, entry] of Object.entries(inputElements)) {
@@ -208,13 +207,12 @@ addNewBookToLibrary.addEventListener('click', function(e) {
     hideInputForm();
     
     let inputElements = e.path[2].querySelectorAll('input');
-    console.log(inputElements);
+    
 
     for (let [instance, entry] of Object.entries(inputElements)) {
         inputFormArray.push(entry.value);
     }
-    console.log(inputFormArray);
-    
+        
     for (let [instance, entry] of Object.entries(inputElements)) {
         entry.value = '';
     }
@@ -236,24 +234,25 @@ function editListeners (){
             
             //creating an index point for which card to change
             let indexForChange = e.path[2].id;
-            console.log(indexForChange, myLibrary);
+            
             
 
             //get information off the book that is being edited.
             let infoToFillForm = []
             let inputPopulators = e.path[2].querySelectorAll('.accessInfo');
             
+            
 
             for (let [instance, entry] of Object.entries(inputPopulators)) {
                 infoToFillForm.push(entry.textContent);
             }
-            console.log(infoToFillForm);
+            
             [infoToFillForm[2], infoToFillForm[3]] = [infoToFillForm[3], infoToFillForm[2]]
-            console.log(infoToFillForm);
+            
 
             //get the input fields of the edit form and fill with the relevant book info
             const editForm = document.querySelector('.editFormScreen').querySelectorAll('input');
-            console.log(editForm);
+            
             
             for (let [instance, entry] of Object.entries(editForm)){
                 entry.value = infoToFillForm[instance];
@@ -270,9 +269,7 @@ function editListeners (){
                 for (let [instance, entry] of Object.entries(inputElements)) {
                     inputFormArray.push(entry.value)
                 }
-                console.log(inputFormArray);
-                [inputFormArray[2], inputFormArray[3]] = [inputFormArray[3], inputFormArray[2]];
-                console.log(inputFormArray);
+                
                 let bookToChange = myLibrary[indexForChange.slice(-1)];
 
                 let i = 0;
@@ -285,7 +282,6 @@ function editListeners (){
                 
                 hideEditForm();
                 closeEdit.removeEventListener('click', updateTheInfo);
-                console.log(myLibrary);
                 showLibrary(myLibrary);
             }
 
@@ -306,9 +302,8 @@ function decreasePages(e) {
     }
     pageNumberElement.textContent = pageNumber;
     let indexForChange = e.path[2].id;
-    myLibrary[indexForChange.slice(-1)].pages = pageNumber;
-    console.log(myLibrary);
-    
+    myLibrary[indexForChange.slice(-1)].pagesRead = pageNumber;
+    updateInfoPane();
 }
 
 function increasePages(e) {
@@ -319,6 +314,9 @@ function increasePages(e) {
         pageNumber +=1;
     }
     pageNumberElement.textContent = pageNumber;
+    let indexForChange = e.path[2].id;
+    myLibrary[indexForChange.slice(-1)].pagesRead = pageNumber;
+    updateInfoPane();
 }
 
 function pageCountListeners() {
@@ -331,4 +329,26 @@ function pageCountListeners() {
         button.addEventListener('click', increasePages);
     })
 }
-// working on functionality for page display at bottom, error swapping when edit is run
+
+function updateInfoPane() {
+    let informationPane = document.querySelectorAll('.info .line .number');
+        
+    let cumulativeInfo = [];
+    let bookCount = myLibrary.length;
+    let completedBookCount = 0;
+    let totalPageCount = 0;
+    let totalReadPageCount = 0;
+    for (let bookIndex in myLibrary) {
+        if (myLibrary[bookIndex].pages == myLibrary[bookIndex].pagesRead) {
+            completedBookCount += 1;
+        }
+        totalPageCount += Number(myLibrary[bookIndex].pages);
+        totalReadPageCount += Number(myLibrary[bookIndex].pagesRead);
+    }
+    cumulativeInfo.push(bookCount, completedBookCount, totalPageCount, totalReadPageCount);
+    console.log(cumulativeInfo);
+    
+    for ([key, value] of Object.entries(informationPane)) {
+        value.textContent = cumulativeInfo[key];
+    }
+}
